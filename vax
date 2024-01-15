@@ -1291,6 +1291,74 @@ end
 end)
 end)
 end)
+
+
+MainTab:AddDropdown({
+	Name = "Fast Attack Speed",
+	Default = "0.175",
+	Options = {"0", "0.1", "0.15", "0.155", "0.16", "0.165", "0.17", "0.175", "0.18", "0.185"},
+	Callback = function(Value)
+		_G.FastAttackDelay = Value
+	end    
+})
+
+spawn(function()
+    while wait(.1) do
+        if _G.FastAttackDelay then
+            pcall(function()
+                if _G.FastAttackDelay == "0" then
+                    _G.FastAttackDelay = 0
+                elseif _G.FastAttackDelay == "0.1" then
+                    _G.FastAttackDelay = 0.1
+                elseif _G.FastAttackDelay == "0.15" then
+                    _G.FastAttackDelay = 0.15
+                elseif _G.FastAttackDelay == "0.155" then
+                    _G.FastAttackDelay = 0.155
+                elseif _G.FastAttackDelay == "0.16" then
+                    _G.FastAttackDelay = 0.16
+                elseif _G.FastAttackDelay == "0.165" then
+                    _G.FastAttackDelay = 0.165
+                elseif _G.FastAttackDelay == "0.17" then
+                    _G.FastAttackDelay = 0.17
+                elseif _G.FastAttackDelay == "0.175" then
+                    _G.FastAttackDelay = 0.175
+                elseif _G.FastAttackDelay == "0.18" then
+                    _G.FastAttackDelay = 0.18
+                elseif _G.FastAttackDelay == "0.185" then
+                    _G.FastAttackDelay = 0.185
+                end
+            end)
+        end
+    end
+end)
+
+    local Client = game.Players.LocalPlayer
+    local STOP = require(Client.PlayerScripts.CombatFramework.Particle)
+    local STOPRL = require(game:GetService("ReplicatedStorage").CombatFramework.RigLib)
+    spawn(function()
+        while task.wait() do
+            pcall(function()
+                if not shared.orl then shared.orl = STOPRL.wrapAttackAnimationAsync end
+                if not shared.cpc then shared.cpc = STOP.play end
+                    STOPRL.wrapAttackAnimationAsync = function(a,b,c,d,func)
+                    local Hits = STOPRL.getBladeHits(b,c,d)
+                    if Hits then
+                        if _G.FastAttack then
+                            STOP.play = function() end
+                            a:Play(0.01,0.01,0.01)
+                            func(Hits)
+                            STOP.play = shared.cpc
+                            wait(a.length * 0.5)
+                            a:Stop()
+                        else
+                            a:Play()
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+
 function GetBladeHit()
     local CombatFrameworkLib = debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework))
     local CmrFwLib = CombatFrameworkLib[2]
@@ -1326,7 +1394,7 @@ function AttackHit()
                 CmrFwLib.activeController.blocking = false
                 CmrFwLib.activeController.timeToNextBlock = 0
                 CmrFwLib.activeController.increment = 3
-                CmrFwLib.activeController.hitboxMagnitude = 120
+                CmrFwLib.activeController.hitboxMagnitude = 60
                 CmrFwLib.activeController.focusStart = 0
                 game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange",tostring(GetBladeHit()))
                 game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladehit, i, "")
@@ -1345,112 +1413,3 @@ spawn(function()
         end
     end
 end)
-
-spawn(function()
-    pcall(function()
-        while wait() do
-            if _G.Farmfast and World1 then
-                if game.Players.LocalPlayer.Data.Level.Value >= 10 then
-                    ToggleFarm:Set(false)
-                    _G.Farmfast = true
-                end
-            end
-        end
-    end)
-end)
-
-spawn(function()
-    while wait() do
-        if _G.Farmfast and World1 then
-            pcall(function()
-            if game.Players.LocalPlayer.Data.Level.Value >= 10 then
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
-                    for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                        if v.Name == "Shanda" then
-                            if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                                repeat task.wait()
-                                    AutoHaki()
-                                    EquipWeapon(_G.SelectWeapon)
-                                    v.HumanoidRootPart.CanCollide = false
-                                    v.Humanoid.WalkSpeed = 0
-                                    StardMag = true
-                                    FastMon = v.HumanoidRootPart.CFrame
-                                    v.HumanoidRootPart.Size = Vector3.new(80,80,80)                             
-                                    TP1(v.HumanoidRootPart.CFrame * Pos)
-                                    game:GetService("VirtualUser"):CaptureController()
-                                    game:GetService("VirtualUser"):Button1Down(Vector2.new(1280,672))
-                                until not _G.Farmfast or not v.Parent or v.Humanoid.Health <= 0
-                                StardMag = false
-                                TP1(CFrame.new(-7678.48974609375, 5566.40380859375, -497.2156066894531))
-                            end
-                        end
-                    end
-                else
-                    if game:GetService("ReplicatedStorage"):FindFirstChild("Shanda") then
-                        TP1(game:GetService("ReplicatedStorage"):FindFirstChild("Shanda").HumanoidRootPart.CFrame * CFrame.new(5,10,2))
-                    end
-                end
-            end)
-        end
-    end
-end)
-
-spawn(function()
-    pcall(function()
-        while wait() do
-            if _G.Farmfast and World1 then
-                if game.Players.LocalPlayer.Data.Level.Value >= 50 then
-                    Farmfasttoggle:Set(false)
-                    _G.AutoPlayerHunter = true
-                end
-            end
-        end
-    end)
-end)
-
-spawn(function()
-    while wait(.1) do
-    if _G.AutoFarmSelectMonster then
-    pcall(function()
-     CheckQuest(SelectMonster)
-     if game:GetService("Workspace").Enemies:FindFirstChild(SelectMonster) then
-     for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-     if v.Name == SelectMonster then
-     if v:FindFirstChild("Humanoid") then
-     if v.Humanoid.Health > 0 then
-     repeat game:GetService("RunService").Heartbeat:wait()
-     EquipWeapon(_G.SelectWeapon)
-     if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
-     local args = {
-      [1] = "Buso"
-     }
-     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-     end
-     topos(v.HumanoidRootPart.CFrame * CFrame.new(0,30,0))
-     v.HumanoidRootPart.CanCollide = false
-     v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-     game:GetService("VirtualUser"):CaptureController()
-     game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 672), game.Workspace.CurrentCamera.CFrame)
-     PosMonSelectMonster = v.HumanoidRootPart.CFrame
-     SelectMonsterMagnet = true
-     until not _G.AutoFarmSelectMonster or not v.Parent or v.Humanoid.Health == 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name)
-     end
-     end
-     end
-     end
-     else
-      CheckQuest(SelectMonster)
-   
-     SelectMonsterMagnet = false
-   
-     topos(CFrameMon)
-   
-     end
-   
-     end)
-   
-    end
-   
-    end
-   
-   end)
