@@ -1209,7 +1209,7 @@ end
 })
 
 ---Farm
-pawn(function()
+spawn(function()
 	while wait() do
 		if _G.Auto_Farm_Level then
 			pcall(function()
