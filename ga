@@ -8,7 +8,7 @@ local G = Window:MakeTab({
 })
 
 ------Sea World-------
-local placeId = game.place
+local placeId = game.placeId
 if placeId == 2753915549 then
     First_Sea = true
 elseif placeId == 4442272183 then
@@ -788,52 +788,52 @@ end)
 end
 
 local Section = G:AddSection({
-    Name = "Settings :"
+	Name = "Select Weapon"
 })
 
+local WeaponList = {"Melee","Sword","Fruit","Gun"}
 G:AddDropdown({
-    Name = "Select Weapon",
-    Default = "Melee",
-    Options = WeaponList,
+	Name = "Select Weapon",
+	Default = "Melee",
     Flag = "Select Weapon",
     Save = true,
-    Callback = function(Value)
-        _G.SelectWeaponTrial = Value
-    end    
+	Options = WeaponList,
+	Callback = function(Value)
+		_G.SelectWeapon = Value
+	end    
 })
-
 task.spawn(
     function()
         while wait() do
-            if _G.SelectWeaponTrial == "Melee" then
+            if _G.SelectWeapon == "Melee" then
                 for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
                     if v.ToolTip == "Melee" then
                         if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                            _G.SelectWeaponTrial = v.Name
+                            _G.SelectWeapon = v.Name
                         end
                     end
                 end
-            elseif _G.SelectWeaponTrial == "Sword" then
+            elseif _G.SelectWeapon == "Sword" then
                 for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
                     if v.ToolTip == "Sword" then
                         if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                            _G.SelectWeaponTrial = v.Name
+                            _G.SelectWeapon = v.Name
                         end
                     end
                 end
-            elseif _G.SelectWeaponTrial == "Gun" then
+            elseif _G.SelectWeapon == "Gun" then
                 for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
                     if v.ToolTip == "Gun" then
                         if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                            _G.SelectWeaponTrial = v.Name
+                            _G.SelectWeapon = v.Name
                         end
                     end
                 end
-            elseif _G.SelectWeaponTrial == "Fruit" then
+            elseif _G.SelectWeapon == "Fruit" then
                 for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
                     if v.ToolTip == "Blox Fruit" then
                         if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                            _G.SelectWeaponTrial = v.Name
+                            _G.SelectWeapon = v.Name
                         end
                     end
                 end
@@ -842,22 +842,16 @@ task.spawn(
     end
 )
 
-local Section = G:AddSection({
-    Name = "Auto Farm Level"
-})
-
-
-G:AddParagraph("Main Farm","Click to Box to Farm, I ready update new mob farm!.")
 
 ToggleFarm = G:AddToggle({
-Name = "Auto Farm",
-Default = false,
-Flag = "LevelFarm",
-Save = true,
-Callback = function(Value)
-    _G.AutoLevel = Value
-    StopTween(_G.AutoLevel)
-end    
+	Name = "Start Farm",
+	Default = false,
+    Flag = "Start Farm",
+    Save = true,
+	Callback = function(Value)
+		_G.AutoLevel = Value
+        StopTween(_G.AutoLevel)
+	end    
 })
 spawn(function()
     while task.wait() do
