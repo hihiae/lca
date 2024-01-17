@@ -842,14 +842,14 @@ task.spawn(
     end
 )
 
-local Section = M:AddSection({
+local Section = G:AddSection({
     Name = "Auto Farm Level"
 })
 
 
-M:AddParagraph("Main Farm","Click to Box to Farm, I ready update new mob farm!.")
+G:AddParagraph("Main Farm","Click to Box to Farm, I ready update new mob farm!.")
 
-ToggleFarm = M:AddToggle({
+ToggleFarm = G:AddToggle({
 Name = "Auto Farm",
 Default = false,
 Flag = "LevelFarm",
