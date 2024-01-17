@@ -1524,8 +1524,8 @@ G:AddToggle({
     Flag = "Start Farm",
     Save = true,
 	Callback = function(Value)
-		_G.Farm = Value
-        StopTween(_G.Farm)
+		_G.AutoFarm = Value
+        StopTween(_G.AutoFarm)
 	end    
 })
 spawn(function()
